@@ -8,7 +8,7 @@ import img4 from '../../citywise/pics/banner pics/3.png'
 const responsive = {
     
     desktop: {
-      breakpoint: { max: 3000, min: 1024 },
+      breakpoint: { max: 3000, min: 300 },
       items: 1
     },
     tablet: {
