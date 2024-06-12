@@ -18,7 +18,10 @@ const upload = multer({ storage: storage });
 const bodyParser = require("body-parser");
 const app = express();
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-app.use(cors());
+const corsOptions = {
+  origin: "https://rentnroam.onrender.com",
+};
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
