@@ -1,26 +1,34 @@
 import React from "react";
 import Modal from "react-modal";
-import axios from 'axios'
-const ConfirmationModal = ({ isOpen, onRequestClose, onConfirm,productId }) => {
-    const handleConfirm = async () => {
-        try {
-            console.log("p id is",productId)
-          // Perform your axios.post request here
-          const response = await axios.post("http://localhost:8000/remove-product", { productId });
-    
-          // Handle the response or any additional logic as needed
-          console.log(response.data);
-        window.location.reload();
-          // Close the modal after successful operation
-          onRequestClose();
-        } catch (error) {
-          // Handle errors
-          console.error("Error removing product:", error);
-    
-          // Close the modal, or display an error message, as needed
-          onRequestClose();
-        }
-      };
+import axios from "axios";
+const ConfirmationModal = ({
+  isOpen,
+  onRequestClose,
+  onConfirm,
+  productId,
+}) => {
+  const handleConfirm = async () => {
+    try {
+      console.log("p id is", productId);
+      // Perform your axios.post request here
+      const response = await axios.post(
+        "https://rent-n-roam.onrender.com/remove-product",
+        { productId }
+      );
+
+      // Handle the response or any additional logic as needed
+      console.log(response.data);
+      window.location.reload();
+      // Close the modal after successful operation
+      onRequestClose();
+    } catch (error) {
+      // Handle errors
+      console.error("Error removing product:", error);
+
+      // Close the modal, or display an error message, as needed
+      onRequestClose();
+    }
+  };
   return (
     <Modal
       isOpen={isOpen}
@@ -38,11 +46,13 @@ const ConfirmationModal = ({ isOpen, onRequestClose, onConfirm,productId }) => {
           borderRadius: "8px",
           outline: "none",
           padding: "20px",
-          height:"190px"
+          height: "190px",
         },
       }}
     >
-      <p style={{ marginBottom: "40px",marginTop:"15px",fontSize:"18px" }}>Are you sure you want to remove this item?</p>
+      <p style={{ marginBottom: "40px", marginTop: "15px", fontSize: "18px" }}>
+        Are you sure you want to remove this item?
+      </p>
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <button
           onClick={handleConfirm}
@@ -53,7 +63,7 @@ const ConfirmationModal = ({ isOpen, onRequestClose, onConfirm,productId }) => {
             border: "none",
             borderRadius: "5px",
             cursor: "pointer",
-            marginRight:"0px"
+            marginRight: "0px",
           }}
         >
           Confirm

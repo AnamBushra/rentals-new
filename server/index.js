@@ -3,9 +3,7 @@ const cors = require("cors");
 const path = require("path");
 var jwt = require("jsonwebtoken");
 const multer = require("multer");
-// const productController = require('./controllers/productController');
-// const userController = require('./controllers/userController');
-
+require("dotenv").config();
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "uploads");
@@ -26,14 +24,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 const port = 8000;
 const mongoose = require("mongoose");
-// mongoose.connect('mongodb+srv://naimu:naimu123@cluster0.t6uhb.mongodb.net/?retryWrites=true&w=majority')
 
 app.get("/", (req, res) => {
   res.send("hello...");
 });
-mongoose.connect(
-  "mongodb+srv://anam23:anamnewdb08@cluster0.kimmomy.mongodb.net/?retryWrites=true&w=majority"
-);
+mongoose.connect(process.env.MONGO_URL);
 let schema = new mongoose.Schema({
   pname: String,
   pdesc: String,
@@ -44,16 +39,16 @@ let schema = new mongoose.Schema({
   addedBy: mongoose.Schema.Types.ObjectId,
   pLoc: {
     type: {
-        type: String,
-        enum: ['Point'],
-        default: 'Point'
+      type: String,
+      enum: ["Point"],
+      default: "Point",
     },
     coordinates: {
-        type: [Number]
-    }
-}
+      type: [Number],
+    },
+  },
 });
-schema.index({ pLoc: '2dsphere' });
+schema.index({ pLoc: "2dsphere" });
 const Products = mongoose.model("Products", schema);
 // const Users = mongoose.model("Users", {
 //   email: String,
@@ -72,18 +67,18 @@ const userSchema = new mongoose.Schema({
   password: String,
   mobile: String,
   username: String,
-  cartItems: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Products' }],
+  cartItems: [{ type: mongoose.Schema.Types.ObjectId, ref: "Products" }],
 });
 
 // Add a pre hook to handle cascading delete
-userSchema.pre('remove', function (next) {
+userSchema.pre("remove", function (next) {
   // Remove associated products when a user is deleted
   Products.deleteMany({ userid: this._id })
     .then(() => next())
     .catch((err) => next(err));
 });
 
-const Users = mongoose.model('Users', userSchema);
+const Users = mongoose.model("Users", userSchema);
 // app.get('/search', productController.search)
 // app.post('/like-product', userController.likeProducts)
 // app.post('/add-product', upload.fields([{ name: 'pimage' }, { name: 'pimage2' }]), productController.addProduct)
@@ -92,8 +87,8 @@ const Users = mongoose.model('Users', userSchema);
 // app.post('/liked-products', userController.likedProducts)
 // app.post('/my-products', productController.myProducts)
 app.post("/addproduct", upload.single("pimage"), (req, res) => {
-    const plat = req.body.plat;
-    const plong = req.body.plong;
+  const plat = req.body.plat;
+  const plong = req.body.plong;
   const pname = req.body.pname;
   const pdesc = req.body.pdesc;
   const price = req.body.price;
@@ -108,9 +103,11 @@ app.post("/addproduct", upload.single("pimage"), (req, res) => {
     category: category,
     pimage: pimage,
     pcity: pcity,
-    addedBy: addedBy, pLoc: {
-        type: 'Point', coordinates: [plat, plong]
-    }
+    addedBy: addedBy,
+    pLoc: {
+      type: "Point",
+      coordinates: [plat, plong],
+    },
   });
   product
     .save()
@@ -138,7 +135,6 @@ app.post("/liked-products", (req, res) => {
 });
 
 app.get("/get-products", (req, res) => {
- 
   Products.find()
     .then((result) => {
       // console.log("Filtered products:", result);
@@ -152,16 +148,15 @@ app.get("/get-products", (req, res) => {
     });
 });
 app.post("/my-product", (req, res) => {
- 
   const userId = req.body.userId;
 
   Products.find({ addedBy: userId })
-      .then((result) => {
-          res.send({ message: 'success', products: result })
-      })
-      .catch((err) => {
-          res.send({ message: err })
-      })
+    .then((result) => {
+      res.send({ message: "success", products: result });
+    })
+    .catch((err) => {
+      res.send({ message: err });
+    });
 });
 app.get("/get-product/:id", (req, res) => {
   const productId = req.params.id;
@@ -208,15 +203,17 @@ app.post("/remove-product", async (req, res) => {
     }
 
     // Use Mongoose to find and remove the product
-    const removedProduct = await Products.findOneAndDelete({ _id: productIdToRemove });
-    console.log("id removes is",productIdToRemove);
+    const removedProduct = await Products.findOneAndDelete({
+      _id: productIdToRemove,
+    });
+    console.log("id removes is", productIdToRemove);
     if (!removedProduct) {
       return res.status(404).send({ message: "Product not found" });
     }
 
     res.send({ message: "Product removed successfully", removedProduct });
   } catch (error) {
-    console.error('Error removing product:', error);
+    console.error("Error removing product:", error);
     res.status(500).send({ message: "Internal server error" });
   }
 });
@@ -243,7 +240,7 @@ app.post("/remove-from-cart", async (req, res) => {
   res.send({ message: "Item removed from cart", updatedUser });
 });
 app.post("/signup", (req, res) => {
-  console.log("boy is here",req.body);
+  console.log("boy is here", req.body);
 
   const email = req.body.email;
   const password = req.body.password;
@@ -255,7 +252,7 @@ app.post("/signup", (req, res) => {
     mobile: mobile,
     username: username,
   });
-  user.save().then(() => console.log("meow"));
+  user.save().then(() => console.log("saved successfully"));
 });
 // app.get('/my-profile/:userId', userController.myProfileById)
 // app.get('/get-user/:uId', userController.getUserById)
@@ -278,19 +275,26 @@ app.get("/get-user/:uId", (req, res) => {
     });
 });
 app.post("/update-profile", async (req, res) => {
-  const { password, mobileNumber, email,name } = req.body;
-  const userId = req.body.userId; 
- console.log(req.body)
+  const { password, mobileNumber, email, name } = req.body;
+  const userId = req.body.userId;
+  console.log(req.body);
   try {
     // Update user profile in the database
     const updatedUser = await Users.findByIdAndUpdate(
       userId,
-      { password:password, mobile:mobileNumber, email:email,username:name },
+      {
+        password: password,
+        mobile: mobileNumber,
+        email: email,
+        username: name,
+      },
       { new: true }
     );
     console.log(updatedUser);
     // Handle the response as needed
-    res.status(200).json({ message: "Profile updated successfully", user: updatedUser });
+    res
+      .status(200)
+      .json({ message: "Profile updated successfully", user: updatedUser });
   } catch (error) {
     console.error("Error updating profile:", error);
     res.status(500).json({ message: "Internal server error" });

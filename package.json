@@ -1,0 +1,24 @@
+{
+  "name": "rentals-website-main",
+  "version": "1.0.0",
+  "description": "A travel specific rental website to allow the interaction between local owners willing to lend the travel gear as well as vehicles, hotels etc. and the travelers.",
+  "main": "index.js",
+  "scripts": {
+    "install-server": "cd backend && npm install",
+    "start-server": "cd backend && node app.js",
+    "install-client": "cd client && npm install",
+    "build-client": "cd client && npm run build",
+    "start-client": "cd client && npm run start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AnamBushra/rentals-new.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AnamBushra/rentals-new/issues"
+  },
+  "homepage": "https://github.com/AnamBushra/rentals-new#readme"
+}

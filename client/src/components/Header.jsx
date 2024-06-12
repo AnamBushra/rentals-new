@@ -50,22 +50,14 @@ export default function Header(props) {
     localStorage.setItem("userCity", city);
 
     if (city) {
-      // City is selected
-      console.log("city", selectedCity);
       setSelectedState(state);
-
       setSelectedCity(city);
-      console.log(city, selectedCity, state, selectedState);
       navigate(`/city/${city}`);
       window.location.reload();
     } else {
-      // State is selected, reset city
       setSelectedState(state);
-      //   setSelectedCity('');
     }
   };
-
-  // ...
 
   useEffect(() => {
     // Fetch user's initial location from localStorage
@@ -79,7 +71,9 @@ export default function Header(props) {
     // Fetch products data from the server
     const fetchProducts = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/get-products");
+        const response = await axios.get(
+          "https://rent-n-roam.onrender.com/get-products"
+        );
         setProducts(response.data.products);
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -92,23 +86,13 @@ export default function Header(props) {
     setText(text);
     setOpen(false);
   };
-  // const { cartItems } = useSelector((state) => state.cart);
-  // const getProducts = useSelector((state) => state.getProducts);
-  // const { products } = getProducts;
   const cartItems = [];
   const getProducts = { products: products };
 
-  // const dispatch = useDispatch();
-
-  // useEffect(() => {
-  // 	dispatch(listProducts());
-  // }, [dispatch]);
   const handleLogout = async (e) => {
     e.preventDefault();
     try {
-      // props.setAcc("");
       window.localStorage.clear();
-      // window.location.reload();
       navigate("/");
     } catch (ee) {
       console.log(ee.response.data.message);
