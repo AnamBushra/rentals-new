@@ -28,11 +28,24 @@
    
 
 }
+@media (max-width: 768px) {
+    .boxxx {
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+    .rowww{
+        display: block;
+    }
+    .boxxx img{
+        display: none;
+    }
+    .boxxx h3 {
+        font-size: 12px;
+    }
+  }
 .boxxx img{
     width:250px;
     padding:15px;
-    
-
 }
 .boxxx h3{
     font-size:25px;

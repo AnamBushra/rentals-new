@@ -89,3 +89,22 @@
     background-color: #eee; /* Add a hover effect to all links, except for headers */
   }
 
+/* For phone */
+@media (max-width: 768px) {
+  .location-selector {
+    width: 100%;
+  }
+
+  .search-form {
+    width: 50%;
+    margin-top: 10px;
+    align-self: flex-start;
+  }
+
+  .navbar {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+}
+

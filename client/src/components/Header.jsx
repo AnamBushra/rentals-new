@@ -5,10 +5,6 @@ import img1 from "../images/user.png";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import stateCityData from "./stateCityData";
-// import { useSelector, useDispatch } from "react-redux"; // hooks
-// import { getProducts as listProducts } from "../redux/actions/productActions";
-
-// import { DataContext } from '../context/DataProvider'
 
 export default function Header(props) {
   const navigate = useNavigate();
@@ -117,7 +113,7 @@ export default function Header(props) {
   };
   return (
     <nav
-      className="navbar navbar-expand-lg fs-5"
+      className="navbar navbar-expand-lg fs-5 navbar"
       style={{ backgroundColor: "#015e65" }}
     >
       <div className="container-fluid">
@@ -144,7 +140,7 @@ export default function Header(props) {
             {/* <label htmlFor="location">Select Location:</label> */}
             <li className="nav-item my-2 mt-3 ms-4 " style={{ width: "15%" }}>
               <select
-                className="form-select"
+                className="form-select location-selector"
                 id="location"
                 value={selectedCity}
                 onChange={handleLocationChange}
@@ -172,7 +168,7 @@ export default function Header(props) {
             </li>
 
             <form
-              className="d-flex ms-3 my-2"
+              className="d-flex ms-3 my-2 search-form"
               role="search"
               style={{ width: "" }}
               onSubmit={(e) => {
